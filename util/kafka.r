@@ -18,7 +18,7 @@ createHandle <- function() {
 }
 
 consumerInstance <- function() {
-    uri = "http://127.0.0.1:8082" ## 我这里暂时写死，这个后续应该提到配置文件中
+    uri = "http://59.110.31.50:8082" ## 我这里暂时写死，这个后续应该提到配置文件中
     groupName = "r_consumer_group"
     consumerName = paste0(UUIDgenerate(TRUE),"_consumer") #"001" # paste0(UUIDgenerate(TRUE),"_consumer")
     handle <- createHandle()
@@ -47,10 +47,10 @@ consumerInstance <- function() {
 }
 
 subscription <- function(groupName, consumerName) {
-    uri = "http://127.0.0.1:8082" ## 我这里暂时写死，这个后续应该提到配置文件中
+    uri = "http://59.110.31.50:8082" ## 我这里暂时写死，这个后续应该提到配置文件中
     handle <- createHandle()
     handle_setheaders(handle, "Content-Type" = "application/vnd.kafka.v2+json") 
-    data = jsonlite::toJSON(list(topics = list("jsontest")), auto_unbox = TRUE)
+    data = jsonlite::toJSON(list(topics = list("GoCallRTopic")), auto_unbox = TRUE)
     handle_setopt(handle, copypostfields = data);
     # my_json_consumer
     # my_consumer_instance

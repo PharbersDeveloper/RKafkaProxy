@@ -5,8 +5,8 @@ source('./util/producer.r', chdir = TRUE)
 listening <- function(fun, ...) {
     while(TRUE) {
         # 只是用来测试，这步骤应该放到计算完成后调用
-        data = jsonlite::toJSON(list(records = list(list(value = list(foo = "bar")))),auto_unbox = TRUE)  
-        sendResultMessage("http://127.0.0.1:8082/topics", "jsontest", data)
+        # data = jsonlite::toJSON(list(records = list(list(value = list(foo = "bar1")))),auto_unbox = TRUE)  
+        # sendResultMessage("http://59.110.31.50:8082/topics", "GoCallRTopic", data)
 
         fun(...)
         Sys.sleep(1)
@@ -18,7 +18,7 @@ callRConsumer <- function(consumerName, groupName) {
     # 接收到消息后执行你的计算，完成后将消息发送出去
 
     tryCatch({
-        uri <- "http://127.0.0.1:8082" ## 我这里暂时写死，这个后续应该提到配置文件中
+        uri <- "http://59.110.31.50:8082" ## 我这里暂时写死，这个后续应该提到配置文件中
         handle <- createHandle()
         handle_setheaders(handle, "Accept" = "application/vnd.kafka.json.v2+json")
         url <- paste0(uri, "/consumers/", groupName ,"/instances/", consumerName, "/records")
