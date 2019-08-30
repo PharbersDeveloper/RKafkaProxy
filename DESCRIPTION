@@ -3,7 +3,7 @@ Type: Package
 Title: Pharbers/Blackmirror Kafka Proxy
 Version: 0.1.0
 Author: Alfred Yang <alfredyang@blackmirror.tech> [cre, aut]
-Maintainer: Alfred Yang
+Maintainer: Alfred Yang <alfredyang@blackmirror.tech>
 Description: Pharbers/Blackmirror Kafka Proxy
 License: GPL-3
 Encoding: UTF-8
