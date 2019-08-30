@@ -12,14 +12,36 @@ PushMessage <- function(content) {
     uri <- Sys.getenv("KAFKA_PROXY_URI");
     topic <- Sys.getenv("KAFKA_PROXY_R_CAL_TOPIC");
 
+	# {"value_schema": "{\"type\": \"record\", \"name\": \"User\", \"fields\": [{\"name\": \"name\", \"type\": \"string\"}]}", "records": [{"value": {"name": "testUser"}}]}
+
+	# schema <- list(
+	# 	"type" = "record", 
+	# 	"name" = "User",
+	# 	"fields" = list(list(
+	# 		"name" = "name",
+	# 		"type" = "string"
+	# 	))
+	# )
+	schema <- '{"type": "record", "name": "User", "fields": [{"name": "name", "type": "string"}]}'
+
+	value <- list(
+		list(
+			"value" = list(
+				"name" = "testUser"
+			)
+		)
+	)
+		
+	avro <- jsonlite::toJSON(list("value_schema" = schema, "records" = value), auto_unbox = TRUE)
+	print(avro)
     handle <- new_handle();
     handle_setheaders(handle,
-                      "Content-Type" = "application/vnd.kafka.json.v2+json",
+                      "Content-Type: application/vnd.kafka.avro.v2+json",
                       "Accept" = "application/vnd.kafka.v2+json"
     )
-    handle_setopt(handle, copypostfields = content);
-
-    url <- paste0(uri, "/" ,topic);
+    handle_setopt(handle, copypostfields = avro);
+    #url <- paste0(uri, "/" ,"crtest2");
+    url <- paste0("http://59.110.31.50:8082/topics", "/" ,"crtest2");
 	print(url)
 	con <- curl(url, handle = handle);
     open(con, "rb", blocking = FALSE);
