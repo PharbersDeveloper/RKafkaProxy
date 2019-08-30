@@ -1,0 +1,15 @@
+Package: RKafkaProxy
+Type: Package
+Title: Pharbers/Blackmirror Kafka Proxy
+Version: 0.1.0
+Author: Alfred Yang <alfredyang@blackmirror.tech> [cre, aut]
+Maintainer: Alfred Yang
+Description: Pharbers/Blackmirror Kafka Proxy
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+Imports:
+    curl,
+    jsonlite,
+    uuid
+RoxygenNote: 6.1.1
