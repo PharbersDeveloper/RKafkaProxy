@@ -1,7 +1,7 @@
 # R Kafka Proxy
 #
 
-library(curl)
+library(httr)
 library(jsonlite)
 # library(uuid)
 
@@ -14,14 +14,6 @@ PushMessage <- function(content) {
 
 	# {"value_schema": "{\"type\": \"record\", \"name\": \"User\", \"fields\": [{\"name\": \"name\", \"type\": \"string\"}]}", "records": [{"value": {"name": "testUser"}}]}
 
-	# schema <- list(
-	# 	"type" = "record", 
-	# 	"name" = "User",
-	# 	"fields" = list(list(
-	# 		"name" = "name",
-	# 		"type" = "string"
-	# 	))
-	# )
 	schema <- '{"type": "record", "name": "User", "fields": [{"name": "name", "type": "string"}]}'
 
 	value <- list(
@@ -33,19 +25,11 @@ PushMessage <- function(content) {
 	)
 		
 	avro <- jsonlite::toJSON(list("value_schema" = schema, "records" = value), auto_unbox = TRUE)
-	print(avro)
-    handle <- new_handle();
-    handle_setheaders(handle,
-                      "Content-Type: application/vnd.kafka.avro.v2+json",
-                      "Accept" = "application/vnd.kafka.v2+json"
-    )
-    handle_setopt(handle, copypostfields = avro);
-    #url <- paste0(uri, "/" ,"crtest2");
-    url <- paste0("http://59.110.31.50:8082/topics", "/" ,"crtest2");
-	print(url)
-	con <- curl(url, handle = handle);
-    open(con, "rb", blocking = FALSE);
-	close(con)
+	
+	header <- add_headers("Content-Type" = "application/vnd.kafka.avro.v2+json", Accept = "application/vnd.kafka.v2+json")
+	
+	r <- POST("http://59.110.31.50:8082/topics/crtest2", body = avro, header)
+	print(r)
 }
 
 #' Get Or Create Pharbers/Blackmirror Comsumer Instance
