@@ -9,18 +9,21 @@ library(jsonlite)
 #' @param content the message json buffer pushed to the kafka
 #' @export
 PushMessage <- function(content) {
-    uri <- Sys.getenv("KAFKA_PROXY_URI")
-    topic <- Sys.getenv("KAFKA_PROXY_R_CAL_TOPIC")
-    h <- new_handle()
+    uri <- Sys.getenv("KAFKA_PROXY_URI");
+    topic <- Sys.getenv("KAFKA_PROXY_R_CAL_TOPIC");
+
+    handle <- new_handle();
     handle_setheaders(handle,
                       "Content-Type" = "application/vnd.kafka.json.v2+json",
                       "Accept" = "application/vnd.kafka.v2+json"
     )
-    handle_setopt(handle, copypostfields = body);
+    handle_setopt(handle, copypostfields = content);
 
-    url <- paste0(uri, "/" ,topic)
-    con <- curl(url, handle = handle)
-    open(con, "rb", blocking = FALSE)
+    url <- paste0(uri, "/" ,topic);
+	print(url)
+	con <- curl(url, handle = handle);
+    open(con, "rb", blocking = FALSE);
+	close(con)
 }
 
 #' Get Or Create Pharbers/Blackmirror Comsumer Instance
