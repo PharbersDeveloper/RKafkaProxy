@@ -14,7 +14,7 @@ PushMessage <- function(content) {
 
 	# {"value_schema": "{\"type\": \"record\", \"name\": \"User\", \"fields\": [{\"name\": \"name\", \"type\": \"string\"}]}", "records": [{"value": {"name": "testUser"}}]}
 
-	schema <- '{"type": "record", "name": "ListeningJobTask", "namespace": "com.pharbers.kafka.schema", "fields": [{"name": "JobId", "type": "string"}, {"name": "Status", "type": "string"}, {"name": "Message", "type": "string"}]}'
+	schema <- '{"type": "record", "name": "ListeningJobTask", "namespace": "com.pharbers.kafka.schema", "fields": [{"name": "JobId", "type": "string"}, {"name": "Status", "type": "string"}, {"name": "Message", "type": "string"}, {"name": "Progress", "type": "string"}]}'
 
 	value <- list(
 		list(
