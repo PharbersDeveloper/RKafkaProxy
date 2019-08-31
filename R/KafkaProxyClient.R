@@ -6,7 +6,7 @@ library(jsonlite)
 # library(uuid)
 
 #' Push R message to pharber/blackmirror message queue
-#' @param content the message json buffer pushed to the kafka
+#' @param content the message json buffer pushed to the kafka type => list()
 #' @export
 PushMessage <- function(content) {
     uri <- Sys.getenv("KAFKA_PROXY_URI");
@@ -14,21 +14,26 @@ PushMessage <- function(content) {
 
 	# {"value_schema": "{\"type\": \"record\", \"name\": \"User\", \"fields\": [{\"name\": \"name\", \"type\": \"string\"}]}", "records": [{"value": {"name": "testUser"}}]}
 
-	schema <- '{"type": "record", "name": "User", "fields": [{"name": "name", "type": "string"}]}'
+	schema <- '{"type": "record", "name": "ListeningJobTask", "fields": [{"name": "JobId", "type": "string"}, {"name": "Status", "type": "string"}, {"name": "Message", "type": "string"}]}'
 
 	value <- list(
 		list(
-			"value" = list(
-				"name" = "testUser"
-			)
+			"value" = content
 		)
 	)
 		
 	avro <- jsonlite::toJSON(list("value_schema" = schema, "records" = value), auto_unbox = TRUE)
+
+	print(avro)
 	
-	header <- add_headers("Content-Type" = "application/vnd.kafka.avro.v2+json", Accept = "application/vnd.kafka.v2+json")
+	header <- add_headers("Content-Type" = "application/vnd.kafka.avro.v2+json", 
+							Accept = "application/vnd.kafka.v2+json")
 	
-	r <- POST("http://59.110.31.50:8082/topics/crtest2", body = avro, header)
+	url <- paste0(uri, "/", topic)
+
+	print(url)
+
+	r <- POST(url, body = avro, header)
 	print(r)
 }
 
